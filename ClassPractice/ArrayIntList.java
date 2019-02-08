@@ -1,60 +1,93 @@
 public class ArrayIntList{
-    /*
-    *This is the code that Coach Booth had us copy as he wrote
-    *It is supposed to create a random array, and then let us add ints to that array
-    *We can find indexs and all that jazz
-    *Also we can add and set those ints.. whoo!
-    */
     private int[]list;
     private int size;
 
-    //You do not always need this. but we used it because we just learned what it is
     public ArrayIntList(){
         this.list = new int[10];
         this.size = 0;
     }
 
-    //You don't want to cause an error by not having enough space
     private void checkSize(){
-        if(this.size > this.list.length/4){
+        if(this.size > 3*this.list.length/4){
             int[] newList = new int[size*2];
             for(int i = 0; i < this.list.length; i++){
                 newList[i] = this.list[i];
             }
+            this.list = newList;
         }
     }
 
     public boolean add(int i){
+        checkSize();
         this.list[this.size] = i;
         this.size++;
         return true;
     }
 
     public void add(int index, int i){
-
+        checkSize();
+        if(index < 0 || index >= size){
+            add(i);
+        }else{
+            int next = i;
+            for(int j = index; j <= size; j++){
+                next = set(j,next);
+            }
+        }
     }
 
     public int indexOf(int i){
-
+        for(int j = 0; j < list.length){
+            if(list[j] == i) return j;
+        }
+        return -1;
     }
 
     public boolean remove(int i){
-
+        int ndx = indexOf(i);
+        if(ndx != -1){
+            for(int j = ndx; j < size; j++){
+                list[j-1] = list[j];
+            }
+            size --;
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public int set(int index, int i){
-
+        if(index < 0 || index >= size){
+            add(i);
+            return i;
+        }else{
+            int res = list[index];
+            list[index] = i;
+            return res;
+        }
     }
 
     public int size(){
-
+        return size;
     }
 
     public String toString(){
-
+        if(size < 1){
+            return "[]";
+        }
+        String res = "[";
+        for(int j = -; j < size-1; j++){
+            res += list[j] +",";
+        }
+        res +=
     }
 
     public boolean equals(Object o){
-        //
+        ArrayIntList other = (ArrayIntList)o;
+        if(size != other.size) return false;
+        for(int i = 0; i < size; i++){
+            if(list[i] != other.list[i]) return false;
+        }
+        return true;
     }
 }
